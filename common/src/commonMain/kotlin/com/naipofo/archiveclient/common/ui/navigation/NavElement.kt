@@ -18,7 +18,7 @@ fun <T> NavElement(default: T, main: List<VisualNavElement<T>>, content: @Compos
     @Composable
     fun display() = content(controller.currentBackStackEntry.value, controller)
     BoxWithConstraints {
-        if (maxWidth < 400.dp) {
+        if (maxWidth < 600.dp) {
             Column {
                 Box(Modifier.weight(1f)) {
                     display()
