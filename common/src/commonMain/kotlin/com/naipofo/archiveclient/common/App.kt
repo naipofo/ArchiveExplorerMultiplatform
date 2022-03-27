@@ -1,23 +1,32 @@
 package com.naipofo.archiveclient.common
 
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Text
-import androidx.compose.material3.Button
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import com.naipofo.archiveclient.common.di.mainModule
+import com.naipofo.archiveclient.common.ui.navigation.NavElement
+import com.naipofo.archiveclient.common.ui.navigation.VisualNavElement
 import org.kodein.di.compose.withDI
 
 @Composable
-fun App()  = withDI(mainModule) {
-    var text by remember { mutableStateOf("Hello, World!") }
-    val platformName = getPlatformName()
-
-    Button(onClick = {
-        text = "Hello, ${platformName}"
-    }) {
-        Text(text)
+fun App() = withDI(mainModule) {
+    NavElement(
+        Destinations.Home,
+        listOf(
+            VisualNavElement(Icons.Default.Home, "Home", Destinations.Home),
+            VisualNavElement(Icons.Default.Settings, "Settings", Destinations.Settings)
+        )
+    ) { current, _ ->
+        when (current) {
+            Destinations.Home -> Text("Home")
+            Destinations.Settings -> Text("Settings")
+        }
     }
+}
+
+sealed interface Destinations {
+    object Home : Destinations
+    object Settings : Destinations
 }
