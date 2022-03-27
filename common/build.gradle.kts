@@ -26,6 +26,7 @@ kotlin {
             dependencies {
                 api(compose.runtime)
                 api(compose.foundation)
+                api(compose.materialIconsExtended)
                 api(compose.material3)
 
                 // Ktor
