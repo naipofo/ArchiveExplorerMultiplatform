@@ -10,19 +10,20 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.naipofo.archiveclient.common.data.RemoteResource
 import com.naipofo.archiveclient.common.data.Result
 import com.naipofo.archiveclient.common.data.model.SimpleHeadline
+import com.naipofo.archiveclient.common.data.remote.archiveorgheadlines.HeadlinesRepository
 import com.naipofo.archiveclient.common.ui.generic.ErrorElement
 import com.naipofo.archiveclient.common.ui.generic.LoadingElement
 import com.naipofo.archiveclient.common.ui.generic.elementFromResource
 import kotlinx.coroutines.launch
+import org.kodein.di.compose.localDI
+import org.kodein.di.instance
 
 data class HomeState(
     val headlines: RemoteResource<Result<List<SimpleHeadline>>> = RemoteResource.Loading
@@ -31,11 +32,12 @@ data class HomeState(
 @Composable
 fun HomeRoute() {
     val scope = rememberCoroutineScope()
-    var homeState = HomeState()
+    var homeState by remember { mutableStateOf(HomeState()) }
+    val headlinesRepository: HeadlinesRepository by localDI().instance()
 
     fun loadData() = scope.launch {
-        homeState = HomeState(
-            RemoteResource.Loading //TODO: Load headlines
+        if (homeState.headlines is RemoteResource.Loading) homeState = homeState.copy(
+            headlines = RemoteResource.Success(headlinesRepository.loadHeadlines())
         )
     }
 
@@ -52,7 +54,18 @@ fun HomeRoute() {
 fun HomeScreen(state: HomeState, onReload: () -> Unit, onNewsClick: (url: String) -> Unit) {
     LazyColumn(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
         item {
-            Text("Archive Explorer!")
+            Text(
+                "Archive Explorer",
+                style = MaterialTheme.typography.headlineLarge,
+                color = MaterialTheme.colorScheme.onBackground,
+                modifier = Modifier.padding(16.dp)
+            )
+            Text(
+                text = "Archive News",
+                style = MaterialTheme.typography.titleLarge,
+                color = MaterialTheme.colorScheme.onBackground,
+                modifier = Modifier.padding(16.dp)
+            )
         }
         elementFromResource(
             state.headlines,
