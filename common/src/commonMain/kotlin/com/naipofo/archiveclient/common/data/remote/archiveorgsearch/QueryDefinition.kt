@@ -33,17 +33,23 @@ data class SearchFilter(
     val filter: SearchRule
 ) {
     fun build(): String = "$field:${when(filter){
-        is SearchRule.Exact -> filter.value
-        is SearchRule.Ratio -> "[${filter.lower} TO ${filter.upper}]"
+        is SearchRule.Exact<*> -> filter.value.build()
+        is SearchRule.Ratio<*> -> "[${filter.lower.build()} TO ${filter.upper.build()}]"
     }}"
 }
 
 sealed interface SearchRule {
-    data class Exact(val value: String) : SearchRule
-    data class Ratio(val lower: String, val upper: String) : SearchRule
+    data class Exact<T: FilterValue>(val value: T) : SearchRule
+    data class Ratio<T: FilterValue>(val lower: T, val upper: T) : SearchRule
 }
 
 sealed interface FilterValue{
+    fun build(): String = when (this){
+        is DateValue -> "${year}-${month}-${day}"
+        is NumberValue -> value.toString()
+        is StringValue -> value
+    }
+
     data class DateValue(val year: Int, val month: Int, val day: Int): FilterValue
     data class NumberValue(val value: Long): FilterValue
     data class StringValue(val value: String): FilterValue

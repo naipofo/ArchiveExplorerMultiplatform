@@ -4,10 +4,11 @@ import com.naipofo.archiveclient.common.data.remote.archiveorgheadlines.Headline
 import com.naipofo.archiveclient.common.data.remote.archiveorgheadlines.RemoteHeadlinesRepository
 import com.naipofo.archiveclient.common.data.remote.archiveorgsearch.RemoteSearchRepository
 import com.naipofo.archiveclient.common.data.remote.archiveorgsearch.SearchApi
-import com.naipofo.archiveclient.common.data.remote.archiveorgsearch.SearchRepository
 import io.ktor.client.*
 import io.ktor.client.plugins.*
 import io.ktor.serialization.kotlinx.json.*
+import io.realm.Realm
+import io.realm.RealmConfiguration
 import kotlinx.serialization.json.Json
 import org.kodein.di.DI
 import org.kodein.di.bindSingleton
@@ -21,6 +22,12 @@ val mainModule = DI {
             }
         }
     }
+
+    bindSingleton("db_config") { RealmConfiguration.Builder(
+        setOf()
+    ).build() }
+
+    bindSingleton { Realm.open(instance("db_config")) }
 
     bindSingleton { HeadlinesApi(instance()) }
     bindSingleton { RemoteHeadlinesRepository(instance()) }

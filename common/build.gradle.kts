@@ -5,6 +5,7 @@ plugins {
     kotlin("plugin.serialization") version "1.6.20-RC"
     id("org.jetbrains.compose")
     id("com.android.library")
+    id("io.realm.kotlin")
 }
 
 group = "com.naipofo.archiveclient"
@@ -20,7 +21,6 @@ kotlin {
     }
     val ktorVersion = "2.0.0-beta-1"
     val kodeinVersion = "7.10.0"
-    val kodeinDBVersion = "0.8.1-beta"
     sourceSets {
         val commonMain by getting {
             dependencies {
@@ -42,8 +42,8 @@ kotlin {
                 implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.3.2")
 
                 //database
-                implementation("org.kodein.db:kodein-db:0.8.1-beta")
-                implementation("org.kodein.db:kodein-db-serializer-kotlinx:$kodeinDBVersion")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0-native-mt")
+                implementation("io.realm.kotlin:library-base:0.10.1")
             }
         }
         val commonTest by getting {

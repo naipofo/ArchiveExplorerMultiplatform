@@ -8,7 +8,7 @@ class RemoteSearchRepository(
 ) : SearchRepository {
     override suspend fun simpleSearch(query: String) = tryResult {
         api.archiveSearch(
-            FilterGroup.Single(SearchFilter(field = "title", filter = SearchRule.Exact(query))), 1
+            FilterGroup.Single(SearchFilter(field = "title", filter = SearchRule.Exact(FilterValue.StringValue(query)))), 1
         ).response.docs.map { SimpleSearchResult(it.identifier) }
     }
 }
