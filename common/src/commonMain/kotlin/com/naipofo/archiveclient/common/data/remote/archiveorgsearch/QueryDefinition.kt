@@ -42,3 +42,19 @@ sealed interface SearchRule {
     data class Exact(val value: String) : SearchRule
     data class Ratio(val lower: String, val upper: String) : SearchRule
 }
+
+sealed interface FilterValue{
+    data class DateValue(val year: Int, val month: Int, val day: Int): FilterValue
+    data class NumberValue(val value: Long): FilterValue
+    data class StringValue(val value: String): FilterValue
+}
+
+enum class FilterValueType{
+    DATE, NUMBER, STRING
+}
+
+data class FilterType(
+    val title: String,
+    val type: FilterValueType,
+    val description: String?
+)
