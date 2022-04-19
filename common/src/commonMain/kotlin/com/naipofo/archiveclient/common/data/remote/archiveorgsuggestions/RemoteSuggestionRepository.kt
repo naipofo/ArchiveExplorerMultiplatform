@@ -9,6 +9,6 @@ class RemoteSuggestionRepository(
 ): SuggestionRepository {
     private val count = 50
     override suspend fun getSuggestions(page: Int): Result<List<SimpleSuggestion>> = tryResult {
-        api.getSuggestions(page, count).value.docs.map { SimpleSuggestion(it.identifier, it.title, it.itemCount.toLongOrNull() ?: 0) }
+        api.getSuggestions(page, count).value.docs.map { SimpleSuggestion(it.title, it.identifier, it.itemCount.toLongOrNull() ?: 0) }
     }
 }

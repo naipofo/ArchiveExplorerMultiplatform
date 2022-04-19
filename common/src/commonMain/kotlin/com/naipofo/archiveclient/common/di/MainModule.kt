@@ -4,6 +4,8 @@ import com.naipofo.archiveclient.common.data.remote.archiveorgheadlines.Headline
 import com.naipofo.archiveclient.common.data.remote.archiveorgheadlines.RemoteHeadlinesRepository
 import com.naipofo.archiveclient.common.data.remote.archiveorgsearch.RemoteSearchRepository
 import com.naipofo.archiveclient.common.data.remote.archiveorgsearch.SearchApi
+import com.naipofo.archiveclient.common.data.remote.archiveorgsuggestions.RemoteSuggestionRepository
+import com.naipofo.archiveclient.common.data.remote.archiveorgsuggestions.SuggestionApi
 import io.ktor.client.*
 import io.ktor.client.plugins.*
 import io.ktor.serialization.kotlinx.json.*
@@ -34,4 +36,7 @@ val mainModule = DI {
 
     bindSingleton { SearchApi(instance()) }
     bindSingleton { RemoteSearchRepository(instance()) }
+
+    bindSingleton { SuggestionApi(instance()) }
+    bindSingleton { RemoteSuggestionRepository(instance()) }
 }
