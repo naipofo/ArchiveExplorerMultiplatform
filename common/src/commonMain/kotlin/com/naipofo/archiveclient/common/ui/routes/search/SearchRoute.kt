@@ -67,11 +67,11 @@ fun SearchScreen(
                     RemoteResource.Loading -> item { Text("Loading suggestions...") }
                     is RemoteResource.Success -> when (val result = state.suggestions.data) {
                         is Result.Success -> {
-                            val perLine = floor(((boxWidth - 16.dp) / 308.dp)).toInt()
+                            val rowCount = floor(((boxWidth - 16.dp) / 308.dp)).toInt() + 1
                             items(result.data.size) { rowIndex ->
                                 Row {
-                                    for (i in 0..perLine) {
-                                        val itemIndex = rowIndex * perLine + i
+                                    for (i in 0 until rowCount) {
+                                        val itemIndex = rowIndex * rowCount + i
                                         if (itemIndex >= result.data.size) {
                                             Box(Modifier.weight(1f)) { }
                                         } else {
