@@ -19,8 +19,9 @@ kotlin {
             kotlinOptions.jvmTarget = "11"
         }
     }
+    // new ktor works only with new kotlin - that does not work with current compose
     val ktorVersion = "2.0.0-beta-1"
-    val kodeinVersion = "7.10.0"
+    val kodeinVersion = "7.11.0"
     sourceSets {
         val commonMain by getting {
             dependencies {
@@ -39,11 +40,11 @@ kotlin {
                 implementation("org.kodein.di:kodein-di-framework-compose:$kodeinVersion")
 
                 //datetime
-                implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.3.2")
+                implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.3.3")
 
                 //database
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0-native-mt")
-                implementation("io.realm.kotlin:library-base:0.10.1")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1-native-mt")
+                implementation("io.realm.kotlin:library-base:0.11.1")
             }
         }
         val commonTest by getting {
@@ -62,7 +63,7 @@ kotlin {
         }
         val androidTest by getting {
             dependencies {
-                implementation("junit:junit:4.13")
+                implementation("junit:junit:4.13.2")
             }
         }
         val desktopMain by getting {
